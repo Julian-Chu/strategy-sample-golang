@@ -9,20 +9,19 @@ var (
 )
 
 func (c Cart) ShippingFee(shipper string, length, width, height, weight float64) (float64, error) {
-	if shipper == "UPS" {
+	switch shipper {
+	case "UPS":
 		if weight > 20 {
 			return 500, nil
-		} else {
-			return 100 + weight*10, nil
 		}
-	} else if shipper == "FedEx" {
+		return 100 + weight*10, nil
+	case "FedEx":
 		size := length * width * height
 		if length > 100 || width > 100 || height > 100 {
 			return size*0.00002*1100 + 500, nil
-		} else {
-			return size * 0.00002 * 1200, nil
 		}
-	} else if shipper == "Post office" {
+		return size * 0.00002 * 1200, nil
+	case "Post office":
 		feeByWeight := 80 + weight*10
 		size := length * width * height
 		feeBySize := size * 0.00002 * 1100
@@ -30,8 +29,7 @@ func (c Cart) ShippingFee(shipper string, length, width, height, weight float64)
 			return feeByWeight, nil
 		}
 		return feeBySize, nil
-	} else {
+	default:
 		return -1, ErrShipperNotExist
 	}
-
 }
