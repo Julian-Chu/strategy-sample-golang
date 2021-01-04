@@ -8,22 +8,33 @@ var (
 	ErrShipperNotExist = errors.New("shipper not exist")
 )
 
-func (c Cart) ShippingFee(shipper string, length, width, height, weight float64) (float64, error) {
+type Product struct {
+	Length float64
+	Width  float64
+	Height float64
+	Weight float64
+}
+
+func NewProduct(length float64, width float64, height float64, weight float64) *Product {
+	return &Product{Length: length, Width: width, Height: height, Weight: weight}
+}
+
+func (c Cart) ShippingFee(shipper string, p *Product) (float64, error) {
 	switch shipper {
 	case "UPS":
-		if weight > 20 {
+		if p.Weight > 20 {
 			return 500, nil
 		}
-		return 100 + weight*10, nil
+		return 100 + p.Weight*10, nil
 	case "FedEx":
-		size := length * width * height
-		if length > 100 || width > 100 || height > 100 {
+		size := p.Length * p.Width * p.Height
+		if p.Length > 100 || p.Width > 100 || p.Height > 100 {
 			return size*0.00002*1100 + 500, nil
 		}
 		return size * 0.00002 * 1200, nil
 	case "Post office":
-		feeByWeight := 80 + weight*10
-		size := length * width * height
+		feeByWeight := 80 + p.Weight*10
+		size := p.Length * p.Width * p.Height
 		feeBySize := size * 0.00002 * 1100
 		if feeByWeight < feeBySize {
 			return feeByWeight, nil
