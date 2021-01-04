@@ -20,7 +20,7 @@ func TestCart_ShippingFee(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "black cat with light weight",
+			name: "ups with light weight",
 			args: args{
 				shipper: ups,
 				length:  30,
@@ -32,7 +32,7 @@ func TestCart_ShippingFee(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "black cat with heavy weight",
+			name: "ups with heavy weight",
 			args: args{
 				shipper: ups,
 				length:  30,
@@ -94,7 +94,7 @@ func TestCart_ShippingFee(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := Cart{}
+			c := NewCart()
 			p := Product{
 				Length: tt.args.length,
 				Width:  tt.args.width,

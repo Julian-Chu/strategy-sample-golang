@@ -2,26 +2,30 @@ package strategy_sample_go
 
 import (
 	"errors"
+	"strings"
 )
 
-type Cart struct{}
+type Cart struct {
+	shipperMap map[string]Shipper
+}
+
+func NewCart() *Cart {
+	m := map[string]Shipper{
+		"ups":         &UPS{},
+		"fedex":       &FedEx{},
+		"post office": &PostOffice{},
+	}
+	return &Cart{shipperMap: m}
+}
 
 var (
 	ErrShipperNotExist = errors.New("shipper not exist")
 )
 
 func (c Cart) ShippingFee(shipper string, product Product) (float64, error) {
-	switch shipper {
-	case "UPS":
-		ups := &UPS{}
-		return ups.CalculateFee(product)
-	case "FedEx":
-		fedex := &FedEx{}
-		return fedex.CalculateFee(product)
-	case "Post office":
-		post := &PostOffice{}
-		return post.CalculateFee(product)
-	default:
-		return -1, ErrShipperNotExist
+	shipper = strings.ToLower(shipper)
+	if shipper, ok := c.shipperMap[shipper]; ok {
+		return shipper.CalculateFee(product)
 	}
+	return -1, ErrShipperNotExist
 }
