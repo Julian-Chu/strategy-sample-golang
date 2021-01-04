@@ -10,3 +10,7 @@ type Product struct {
 func NewProduct(length float64, width float64, height float64, weight float64) *Product {
 	return &Product{Length: length, Width: width, Height: height, Weight: weight}
 }
+
+func (p Product) Size() float64 {
+	return p.Length * p.Width * p.Height
+}
