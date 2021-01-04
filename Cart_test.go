@@ -95,7 +95,13 @@ func TestCart_ShippingFee(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := Cart{}
-			got, err := c.ShippingFee(tt.args.shipper, tt.args.length, tt.args.width, tt.args.height, tt.args.weight)
+			p := Product{
+				Length: tt.args.length,
+				Width:  tt.args.width,
+				Height: tt.args.height,
+				Weight: tt.args.weight,
+			}
+			got, err := c.ShippingFee(tt.args.shipper, p)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ShippingFee() error = %v, wantErr %v", err, tt.wantErr)
 				return
