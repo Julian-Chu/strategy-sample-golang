@@ -1,5 +1,7 @@
 package strategy_sample_go
 
+var _ Shipper = UPS{}
+
 type UPS struct {
 }
 

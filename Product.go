@@ -7,6 +7,6 @@ type Product struct {
 	Weight float64
 }
 
-func NewProduct(length, width, height, weight float64) *Product {
-	return &Product{Length: length, Width: width, Height: height, Weight: weight}
+func NewProduct(length, width, height, weight float64) Product {
+	return Product{Length: length, Width: width, Height: height, Weight: weight}
 }
